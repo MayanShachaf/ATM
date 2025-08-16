@@ -13,47 +13,54 @@ The service uses SQLite as the storage layer and the aiosqlite library for async
 # How to run
 
 1.Clone the repository and create a virtual environment:
+```
 git clone https://github.com/MayanShachaf/ATM.git
 cd ATM
 python3 -m venv venv
 source venv/bin/activate
----
+```
 2.Install dependencies from requirements.txt:
+```
 pip install -r requirements.txt
----
+```
 3.Create a .env file (optional) to override default configuration. The service supports these environment variables:
 - DB_PATH – file name of the SQLite database; defaults to atm.db.
 - MAX_DEBT – maximum negative balance allowed (i.e., overdraft limit); defaults to 1000.
 Example .env file:
+```
 DB_PATH=/tmp/atm.db
 MAX_DEBT=500
----
+```
 4.Start the API using Uvicorn. The project defines the FastAPI app in main.py as app.
 Run:
+```
 uvicorn main:app --reload --port 8000
-
+```
 When the server starts, it will call initialize_database() inside the lifespan context of FastAPI to create the accounts table if it does not already exist.
----
+
 5.Test the API. You can access the interactive documentation at http://localhost:8000/docs. Below are simple cURL examples:
 
 -Check API health:
+```
 curl http://localhost:8000/is_alive
 # {"active":"true"}
-
+```
 -Check account balance (returns 0 if the account does not exist):
+```
 curl http://localhost:8000/accounts/1234/balance
 # {"account_number":"1234","balance":0}
-
+```
 -Deposit money:
+```
 curl -X POST http://localhost:8000/accounts/1234/deposit      -H 'Content-Type: application/json'      -d '{"amount": 150.5}'
 # {"account_number":"1234","deposited_amount":150.5,"balance":150.5,"status":"success"}
-
+```
 
 -Withdraw money (the maximum overdraft is controlled by MAX_DEBT; on insufficient funds it returns HTTP 400):
-
+```
 curl -X POST http://localhost:8000/accounts/1234/withdraw      -H 'Content-Type: application/json'      -d '{"amount": 200}'
 # {"account_number":"1234","withdrawn_amount":200,"balance":-49.5,"status":"success"}
-
+```
 
 -If the withdrawal would exceed the allowed debt limit, the API returns:
 
@@ -113,12 +120,12 @@ In summary, I preferred database‑level locking for its simplicity and reliabil
 # Database schema and debt limit
 
 The accounts table is created with this schema:
-
+```
 CREATE TABLE IF NOT EXISTS accounts (
     account_number TEXT PRIMARY KEY,
     balance REAL NOT NULL DEFAULT 0.0 CHECK (balance >= -{MAX_DEBT})
 );
-
+```
 -Each account_number is a string that uniquely identifies an account.
 
 -The balance is a real number. The CHECK constraint prevents the balance from going below  -MAX_DEBT, where MAX_DEBT is defined by an environment variable (default 1000).
