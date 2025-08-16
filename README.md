@@ -228,7 +228,7 @@ By choosing a database, we delegate concurrency control to SQLite. SQLite’s wr
 
 # Conclusion
 
-This ATM API provides a small but complete example of building an asynchronous web service in Python. It shows how to structure a FastAPI application into API, logic, and database layers, how to use aiosqlite for simple persistence, and how to handle concurrency using database transactions rather than custom locks. The service is configurable via environment variables and comes with interactive documentation for easy testing. Feel free to extend it with additional features such as account creation, transfer between accounts, authentication or integration with a more scalable database.
+This ATM API provides a small but complete example of building an asynchronous web service in Python. It shows how to structure a FastAPI application into API, logic, and database layers, how to use aiosqlite for simple persistence, and how to handle concurrency using database transactions rather than custom locks. The service is configurable via environment variables and comes with interactive documentation for easy testing.
 
 --------------
 
