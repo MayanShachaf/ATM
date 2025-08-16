@@ -10,10 +10,14 @@ MAX_DEBT = os.getenv("MAX_DEBT", 1000)
 # Database exceptions when account not found for get balance 
 class AccountNotFoundError(Exception):
     pass
+
+
 # Custom exception for insufficient funds during withdrawal
 # This is raised when the withdrawal amount exceeds the allowed debt limit.
 class InsufficientFundsError(Exception):
     pass
+
+
 # Initialize the database and create the accounts table if it doesn't exist.
 # This function is called when the application starts.
 # It uses an async context manager to handle the database connection.
@@ -28,6 +32,7 @@ async def initialize_database():
             )
         ''')
         await conn.commit()
+
 
 # Get the balance of an account from the database.
 # If the account does not exist, it raises an AccountNotFoundError.
@@ -44,6 +49,7 @@ async def get_balance(account_number: str) -> float:
             raise AccountNotFoundError()
 
         return row[0]
+
 
 # Update the balance of an account by adding or subtracting a delta value.
 # This function uses an UPSERT operation to either insert a new account or update the existing balance.
