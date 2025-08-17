@@ -11,7 +11,7 @@ client = TestClient(app)
 
 # Test deosit and then balance retrieval
 def test_deposit_then_get_balance():
-    account = "12"
+    account = "112"
     resp = client.post(f"/accounts/{account}/deposit", json={"amount": 50.0})
     assert resp.status_code == 200
     assert resp.json()["balance"] == 50.0
@@ -22,7 +22,7 @@ def test_deposit_then_get_balance():
 
 #Test deposit, withdraw and then get balance
 def test_deposit_withdraw_then_balance():
-    account = "23"
+    account = "223"
     resp = client.post(f"/accounts/{account}/deposit", json={"amount": 50.0})
     assert resp.status_code == 200
     resp = client.post(f"/accounts/{account}/withdraw", json={"amount": 20.0})
@@ -34,7 +34,15 @@ def test_deposit_withdraw_then_balance():
 
 #Test withdraw with insufficient funds
 def test_overdraft_error():
-    account = "34"
+    account = "334"
     resp = client.post(f"/accounts/{account}/withdraw", json={"amount": 1500.0})
     assert resp.status_code == 400
+
+
+#Test balance for account that does not exist in db
+def test_new_account_get_balance():
+    account = "445"
+    resp = client.get(f"/accounts/{account}/balance")
+    assert resp.status_code == 200
+    assert resp.json()["balance"] == 0.0
 
