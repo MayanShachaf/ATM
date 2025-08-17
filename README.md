@@ -239,3 +239,17 @@ I use Render to deploy this small API because it offers push-to-deploy from Git,
 API (RENDER): https://atm-0ofb.onrender.com
 API DOCS : https://atm-0ofb.onrender.com/docs   
 
+------------------
+## Running tests
+
+A small suite of integration tests lives in the `Tests/` directory. The file `Tests/test_api.py` exercises the key API endpoints for depositing, withdrawing and checking balances, including an overdraft case. To run the tests:
+
+1. Install the test dependencies (only `pytest` is required):
+
+   ```bash
+   pip install -U pytest
+    ```
+2. From the repository root, execute the tests:
+
+```pytest -q
+```
