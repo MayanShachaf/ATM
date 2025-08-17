@@ -251,7 +251,7 @@ A small suite of integration tests lives in the `Tests/` directory. The file `Te
     ```
 2. From the repository root, execute the tests:
 
+   ```bash
+   pytest -q
     ```
-    pytest -q
-    
-    ```
+   
