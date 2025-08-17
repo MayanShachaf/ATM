@@ -7,6 +7,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from main import app  # main.py is now importable from the project root
 
+# Create a test client for the FastAPI app
+# This allows us to make requests to the API endpoints in our tests
 client = TestClient(app)
 
 # Test deosit and then balance retrieval
